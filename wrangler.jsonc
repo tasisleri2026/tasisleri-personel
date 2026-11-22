@@ -1,0 +1,29 @@
+// Taş İşleri Personel ve Mesai Takip Programı — Cloudflare ayarları
+// KURULUMDA DEĞİŞTİRİLECEK TEK YER: database_id (rehberdeki 5. adım)
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "tasisleri-personel",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-09-01",
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*"]
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "tasisleri-db",
+      "database_id": "BURAYA-D1-ID"
+    }
+  ],
+  // İstanbul saatiyle 06:00–22:45 arası her 15 dakikada bir trafik; saat başlarında hava/kur/altın (cron UTC yazılır)
+  "triggers": { "crons": ["*/15 3-19 * * *"] },
+  "vars": {
+    // Trafik ve hava için merkez nokta (varsayılan: Kartal)
+    "KONUM_AD": "Kartal",
+    "KONUM_LAT": "40.8890",
+    "KONUM_LON": "29.1890"
+  },
+  "observability": { "enabled": true }
+}
