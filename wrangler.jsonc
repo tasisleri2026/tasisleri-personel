@@ -14,7 +14,7 @@
     {
       "binding": "DB",
       "database_name": "tasisleri-db",
-      "database_id": "BURAYA-D1-ID"
+      "database_id": "301e7baf-1f7b-43cd-8e3a-0e1d2a237f36"
     }
   ],
   // İstanbul saatiyle 06:00–22:45 arası her 15 dakikada bir trafik; saat başlarında hava/kur/altın (cron UTC yazılır)
