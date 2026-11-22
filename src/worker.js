@@ -33,6 +33,7 @@ const RULES = {
 };
 const ruleOf = coll => RULES[coll] || DEF;
 const RESERVED = new Set(['kurucu', '__g']);
+const KAYIT = new Set(['yoklama', 'kayitlar', 'hareketler']);
 const KORUMALI = ['rol', 'unvan', 'yetkiler']; // personel kaydında yalnız Genel Müdürün değiştirebileceği alanlar
 
 const json = (o, status = 200, extra = {}) => new Response(JSON.stringify(o), {
@@ -73,7 +74,7 @@ const isCurrent = p => !!p && !(p.cikis && p.cikis <= today()) && !p.arsiv;
 const ipOf = req => req.headers.get('cf-connecting-ip') || 'yerel';
 function cookieTok(req) { return (req.headers.get('cookie') || '').match(/(?:^|;\s*)tip_s=([A-Za-z0-9_-]{20,})/)?.[1] || null; }
 async function who(req, env) {
-  const ctx = { read: 0, write: 0, session: null, gm: false, hesap: false, kisisel: false, rol: '', ad: '', extraW: new Set() };
+  const ctx = { read: 0, write: 0, session: null, gm: false, hesap: false, kisisel: false, kayit: false, sirketY: false, rol: '', ad: '', extraW: new Set() };
   const tok = cookieTok(req);
   if (!tok) return ctx;
   const s = await env.DB.prepare('SELECT * FROM oturum WHERE token=?').bind(tok).first();
@@ -96,6 +97,8 @@ async function who(req, env) {
     ctx.gm = p.unvan === 'Genel Müdür' || !!y.unvan;
     ctx.hesap = p.unvan === 'Genel Müdür' || !!y.hesap;
     ctx.kisisel = p.unvan === 'Genel Müdür' || !!y.kisisel;
+    ctx.kayit = p.unvan === 'Genel Müdür' || !!y.kayit;     // giriş-çıkış, mesai, izin, avans, puantaj
+    ctx.sirketY = p.unvan === 'Genel Müdür' || !!y.sirket;  // şirket bilgileri
   } else {
     ctx.read = 2; ctx.write = 2;
     if (p.rol === 'yonetici' && y.sinirli && (y.maasOde || y.bordro)) { ctx.read = 3; ctx.extraW = new Set(['odeme', 'islemlog']); }
@@ -116,6 +119,8 @@ function canWrite(ctx, path) {
   if (coll === 'hesaplar') return ctx.hesap && !RESERVED.has(id);
   if (coll === 'kisisel') return ctx.kisisel;
   if (coll === 'ynot') return ctx.write >= 3 || ctx.rol === 'ustabasi'; // usta başı yalnız 'okundu' işaretler (aşağıda)
+  if (coll === 'sirket') return ctx.sirketY;
+  if (ctx.write >= 3 && !ctx.kayit && KAYIT.has(coll)) return false; // yetkisiz yönetici: yalnız görüntüler
   if (ctx.extraW.has(coll)) return true;
   return ctx.write >= ruleOf(coll)[1];
 }
