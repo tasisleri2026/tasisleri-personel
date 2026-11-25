@@ -225,6 +225,8 @@ header .hlogo{width:34px;height:34px;border-radius:7px;display:block}
 .tick .run b{color:#fff}
 .tick .tz{flex:0 0 auto;font:10px ui-monospace,Menlo,monospace;letter-spacing:1px;opacity:.6;padding:0 12px}
 .tick .run i{font-style:normal}
+.tick .vp.st{-webkit-mask-image:none;mask-image:none;padding-left:12px;text-overflow:ellipsis}
+@media(max-width:700px){.tick .tkh{display:none}}
 .tick .tkb{flex:0 0 auto;display:flex;gap:6px;padding:0 8px;height:100%;align-items:center;background:#15181c;z-index:1}
 .tick .tkb a{color:#141414;background:#f2a51a;text-decoration:none;font-weight:700;font-size:11.5px;padding:5px 10px;border-radius:7px;white-space:nowrap}
 .tick .tkb a:hover{background:#ffc04a}
@@ -647,10 +649,7 @@ function heroHtml(){const d=new Date(),h=d.getHours();S._heroKey=today()+'-'+h;c
   '<div class="src">TCMB DÖVİZ SATIŞ · '+esc(K.tarih||'—')+(A.zaman?' · ALTIN '+esc(A.zaman):'')+(C.guncelleme?' · GÜNCELLEME '+esc(tsStr(Date.parse(C.guncelleme))):'')+'</div></div>'+
   '</div>'+tickerHtml()}
 function trafikItems(){const T=(S.canli||{}).trafik;if(!T)return null;return T}
-function tickerHtml(){const T=trafikItems();let body,tz='';
- if(!T){body='<span>Kartal çevresi canlı trafik haritası için sağdaki <b>Yandex</b> veya <b>Google</b> düğmesine basın.</span>'}
- else{const L=(T.maddeler||[]);body=(T.ozet?'<span><b>'+esc(T.ozet)+'</b></span>':'')+L.map(m=>'<span><i class="r'+(+m.s||0)+'">●</i> '+esc(m.t)+'</span>').join('');tz='GÜNCELLEME '+esc(T.zaman||'')}
- return'<div class="tick"><div class="lb">🚦<span class="lt"> TRAFİK · 20 KM</span></div><div class="vp"><div class="run" data-tk="1">'+body+body+'</div></div><div class="tz">'+tz+'</div><div class="tkb"><a href="'+TRAFIK_YANDEX+'" target="_blank" rel="noopener" title="Yandex Haritalar — canlı trafik">🗺 Yandex</a><a href="'+TRAFIK_GOOGLE+'" target="_blank" rel="noopener" title="Google Haritalar — canlı trafik">🗺 Google</a></div></div>'}
+function tickerHtml(){return'<div class="tick"><div class="lb">🚦<span class="lt"> TRAFİK</span></div><div class="vp st"><b><span class="tkh">Kartal çevresi </span>Canlı trafik</b><span class="tkh"> — haritayı açmak için sağdaki düğmeye basın</span></div><div class="tkb"><a href="'+TRAFIK_YANDEX+'" target="_blank" rel="noopener" title="Yandex Haritalar — canlı trafik">🗺 Yandex</a><a href="'+TRAFIK_GOOGLE+'" target="_blank" rel="noopener" title="Google Haritalar — canlı trafik">🗺 Google</a></div></div>'}
 const TRAFIK_YANDEX='https://yandex.com.tr/harita/?ll=29.1890%2C40.8890&z=12&l=map%2Ctrf';
 const TRAFIK_GOOGLE='https://www.google.com/maps/@40.8890,29.1890,12z/data=!5m1!1e1';
 (function tkLoop(){const r=document.querySelector('.tick .run');if(r){const w=r.scrollWidth/2;if(w>0){const x=(performance.now()/1000*55)%w;r.style.transform='translateX('+(-x)+'px)'}}requestAnimationFrame(tkLoop)})();
