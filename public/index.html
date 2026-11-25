@@ -45,6 +45,16 @@ h4{font-size:13px;margin:14px 0 6px;color:var(--muted);text-transform:uppercase;
 .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .between{justify-content:space-between}
 .grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));margin-bottom:16px}
+.grid.kpis{grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+.kpis .kpi{padding:8px 10px;min-width:0}
+.kpis .kpi .l{font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kpis .kpi .v{font-size:17px;white-space:nowrap}
+@media(max-width:700px){.grid.kpis{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px}.kpis .kpi{padding:7px 8px}.kpis .kpi .v{font-size:15px}.kpis .kpi .l{font-size:10.5px}}
+.card.fold>h2:first-child,.card.fold>h3:first-child,.card.fold>.row:first-child h2,.card.fold>.row:first-child h3{cursor:pointer;user-select:none}
+.card.fold .ftog{cursor:pointer;display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:7px;background:#f1efeb;font-size:12px;margin-left:8px;transition:transform .15s;flex:0 0 auto}
+.card.fold.kapali .ftog{transform:rotate(-90deg)}
+.card.fold.kapali>*:not(:first-child){display:none!important}
+.card.fold.kapali{padding-bottom:12px}
 .kpi{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:12px 14px}
 .kpi .v{font-size:21px;font-weight:700;font-variant-numeric:tabular-nums}
 .kpi .l{color:var(--muted);font-size:12px}
@@ -215,8 +225,11 @@ header .hlogo{width:34px;height:34px;border-radius:7px;display:block}
 .tick .run b{color:#fff}
 .tick .tz{flex:0 0 auto;font:10px ui-monospace,Menlo,monospace;letter-spacing:1px;opacity:.6;padding:0 12px}
 .tick .run i{font-style:normal}
+.tick .tkb{flex:0 0 auto;display:flex;gap:6px;padding:0 8px;height:100%;align-items:center;background:#15181c;z-index:1}
+.tick .tkb a{color:#141414;background:#f2a51a;text-decoration:none;font-weight:700;font-size:11.5px;padding:5px 10px;border-radius:7px;white-space:nowrap}
+.tick .tkb a:hover{background:#ffc04a}
 .tick .r3{color:#ff6b5b}.tick .r2{color:#ffb547}.tick .r1{color:#f5df6b}.tick .r0{color:#7ed39a}
-@media(max-width:700px){.tick .tz{display:none}}
+@media(max-width:700px){.tick .tz{display:none}.tick .lb .lt{display:none}.tick .tkb a{padding:5px 8px}}
 /* duyurular */
 .du{border:1px solid var(--line);border-left:4px solid #9aa0a6;border-radius:10px;padding:10px 12px;margin-bottom:8px;background:#fff}
 .du.t-uyari{border-left-color:var(--bad)}.du.t-isg{border-left-color:var(--warnbd)}.du.t-plan{border-left-color:var(--blu)}.du.t-kutlama{border-left-color:var(--ok)}
@@ -256,9 +269,9 @@ const ROL={yonetici:'Yönetici',ustabasi:'Usta başı',calisan:'İşçi'};
 const BELGE=[['iseGiris','İşe giriş bildirgesi'],['kkd','KKD zimmet formu (EN std.)'],['myk','MYK / diploma / ustalık'],['ek2','EK-2 periyodik muayene'],['isgEgitim','İSG eğitim belgesi'],['yuksekte','Yüksekte çalışma belgesi']];
 const CIKIS_KOD=[['01','01 · Deneme süreli sözleşmenin işverence feshi'],['02','02 · Deneme süreli sözleşmenin işçi tarafından feshi'],['03','03 · İşçi tarafından fesih (istifa)'],['04','04 · İşveren tarafından haklı sebep bildirilmeden fesih'],['05','05 · Belirli süreli sözleşmenin sona ermesi'],['08','08 · Emeklilik / yaşlılık aylığı'],['10','10 · Ölüm'],['12','12 · Askerlik'],['13','13 · Kadın işçinin evlenmesi'],['15','15 · Toplu işçi çıkarma'],['17','17 · İşyerinin kapanması'],['18','18 · İşin sona ermesi'],['22','22 · Diğer nedenler'],['25','25 · İşçi tarafından zorunlu nedenle fesih'],['28','28 · İşveren tarafından sağlık nedeniyle fesih'],['29','29 · İşveren tarafından ahlak ve iyiniyet kurallarına aykırılık nedeniyle fesih'],['?','Kod henüz belirlenmedi (muhasebeye sorulacak)']];
 const TALEP_K=['Alet / edevat','Malzeme','Araç / nakliye','Personel / ek eleman','İzin / özel durum','Satın alma','Diğer'];
-const TABS={panel:'Panel',bugun:'Bugün',puantaj:'Aylık puantaj',gunluk:'Günlük kayıt',personel:'Personel',ayrilan:'Ayrılanlar',hesap:'Mesai hesabı',maas:'Ay sonu maaş',bordro:'Bordro kontrol',islemler:'Yapılan işlemler',planlama:'Planlama & talepler',isler:'İşler (tezgah)',sirket:'Şirket',yonetim:'Yönetim',kilavuz:'Kullanım kılavuzu'};
+const TABS={panel:'Ana sayfa',bugun:'Bugün',puantaj:'Aylık puantaj',gunluk:'Günlük kayıt',personel:'Personel',ayrilan:'Ayrılanlar',hesap:'Mesai hesabı',maas:'Ay sonu maaş',bordro:'Bordro kontrol',islemler:'Yapılan işlemler',planlama:'Planlama & talepler',isler:'İşler (tezgah)',sirket:'Şirket',yonetim:'Yönetim',kilavuz:'Kullanım kılavuzu'};
 const TICON={panel:'🏠',bugun:'🏠',puantaj:'📅',gunluk:'📝',personel:'👥',ayrilan:'🚪',hesap:'⏱️',maas:'💳',bordro:'✅',islemler:'📜',planlama:'🗓️',isler:'🧱',sirket:'🏢',yonetim:'⚙️',kilavuz:'📘'};
-const ROLE_TABS={yonetici:['panel','puantaj','gunluk','personel','ayrilan','hesap','maas','bordro','planlama','isler','sirket','islemler','yonetim','kilavuz'],ustabasi:['bugun','planlama','kilavuz'],calisan:['bugun','planlama','kilavuz'],gozlem:['bugun','maas','bordro','planlama','kilavuz']};
+const ROLE_TABS={yonetici:['panel','puantaj','gunluk','personel','ayrilan','hesap','maas','bordro','planlama','isler','sirket','yonetim','kilavuz'],ustabasi:['bugun','planlama','kilavuz'],calisan:['bugun','planlama','kilavuz'],gozlem:['bugun','maas','bordro','planlama','kilavuz']};
 const FORCED={yonetici:['panel','yonetim'],ustabasi:['bugun'],calisan:['bugun'],gozlem:['bugun']};
 const PROG='Taş İşleri Personel ve Mesai Takip Programı';
 const DEF={firma:'TAŞİŞLERİ Yapı Malzemeleri İnşaat ve Taahhüt Tic. Ltd. Şti.',baslangic:'08:30',bitis:'20:00',gunSaat:10.5,cmt:5000,pzr:8000,tatil:8000,yemek:2500,saat:'',asgariBrut:33030,gecDk:15,gelmediDk:60,talepMinGun:2,planBasSaat:'09:00',planSonSaat:'18:00',yoklamaBas:'',odemeTakipBas:'',
@@ -496,7 +509,7 @@ function decideRole(){
  if(real==='yonetici'&&S.preview&&isCurrent(S.preview)){emp=S.preview;r=rolOf(S.preview);if(r==='yonetici'&&(P(emp).yetkiler||{}).sinirli)r='gozlem'}else S.preview=null;
  S.realRole=real;S.role=r;S.act=r?{empId:emp,rol:r}:null;
  if(real==='yonetici'||(real==='gozlem'&&emp&&(((P(emp).yetkiler||{}).maasOde)||((P(emp).yetkiler||{}).bordro))))start('admin');if(r)start('ortak');
- const tabs=visibleTabs();if(!S.view||!tabs.includes(S.view)){const h=location.hash.slice(1);S.view=tabs.includes(h)?h:(r==='yonetici'&&tabs.includes(S.ayar.gorunum.acilis)?S.ayar.gorunum.acilis:tabs[0])}
+ const tabs=visibleTabs();if(!S.view||!tabs.includes(S.view)){S.view=homeView(tabs);navInit()}
 }
 function start(k){if(S.started[k])return;S.started[k]=true;const db=S.db;
  if(k==='admin'){const tm=setTimeout(()=>{if(!S.loaded.admin)setStatus('Puantaj kayıtları henüz alınamadı — bağlantı bekleniyor.')},10000);
@@ -558,14 +571,33 @@ function drawHeader(){
 }
 function draw(){S.deferred=false;drawHeader();document.body.classList.toggle('login',!S.role&&S.loaded.personel);const m=$('#main');
  if(!S.loaded.personel){m.innerHTML='<div class="card">Veriler yükleniyor…</div>';return}
- try{if(!S.role)m.innerHTML=LOGIN();else{const f=V[S.view];m.innerHTML=f?f():V.kilavuz()}}catch(e){console.error(e);m.innerHTML='<div class="card">Bir hata oluştu: '+esc(e.message)+'</div>'}}
+ try{if(!S.role)m.innerHTML=LOGIN();else{const f=V[S.view];m.innerHTML=f?f():V.kilavuz();if(S.view==='panel'||S.view==='bugun')foldCards(m)}}catch(e){console.error(e);m.innerHTML='<div class="card">Bir hata oluştu: '+esc(e.message)+'</div>'}}
+function foldKey(c){const h=c.querySelector('h2,h3');return h?('f:'+S.view+':'+h.textContent.replace(/[\d().,:·—–-]+/g,'').replace(/\s+/g,' ').trim().slice(0,40)):null}
+function foldGet(){try{return JSON.parse(localStorage.getItem('tip_fold')||'{}')}catch(e){return{}}}
+function foldCards(m){const st=foldGet();[...m.children].forEach(c=>{if(!c.classList.contains('card')||c.classList.contains('hero'))return;const k=foldKey(c);if(!k||c.children.length<2)return;const head=c.children[0];const h=c.querySelector('h2,h3');if(!head.contains(h))return;
+ c.classList.add('fold');if(st[k])c.classList.add('kapali');const t=document.createElement('span');t.className='ftog';t.textContent='▾';t.title='Aç / kapat';
+ if(head===h){h.style.display='flex';h.style.alignItems='center';h.appendChild(t)}else{h.parentNode.insertBefore(t,h.nextSibling)}
+ const tog=ev=>{ev.preventDefault();ev.stopPropagation();c.classList.toggle('kapali');const s2=foldGet();if(c.classList.contains('kapali'))s2[k]=1;else delete s2[k];try{localStorage.setItem('tip_fold',JSON.stringify(s2))}catch(e){}};
+ t.addEventListener('click',tog);h.addEventListener('click',tog)})}
 function toast(html,cls,ms){const t=document.createElement('div');t.className='toast '+(cls||'');t.innerHTML=html;$('#toasts').appendChild(t);setTimeout(()=>t.remove(),ms||4000)}
 function modal(html){$('#mbox').innerHTML=html;$('#modal').classList.remove('hidden');const f=$('#mbox').querySelector('input:not([type=checkbox]),select,textarea');if(f&&window.innerWidth>700)f.focus()}
 function closeModal(){$('#modal').classList.add('hidden');$('#mbox').innerHTML='';if(S.deferred)draw()}
 const val=id=>{const e=document.getElementById(id);return e?(e.type==='checkbox'?e.checked:String(e.value).trim()):''};
 const monthNav=act=>'<div class="row"><button class="btn s" data-act="'+act+'" data-k="-1">‹</button><b style="min-width:120px;text-align:center">'+ymLabel(S.month)+'</b><button class="btn s" data-act="'+act+'" data-k="1">›</button></div>';
 const dateNav=(act,ds)=>'<div class="row"><button class="btn s" data-act="'+act+'" data-k="-1">‹</button><input type="date" value="'+ds+'" data-chg="'+act+'"><button class="btn s" data-act="'+act+'" data-k="1">›</button><b>'+GUNU[pd(ds).getDay()]+'</b>'+(ds!==today()?'<button class="btn s" data-act="'+act+'" data-k="0">Bugün</button>':'')+'</div>';
-function setView(v){S.view=v;S.aDraft=S.gorDraft=S.sDraft=null;if(v!=='personel'&&v!=='ayrilan')S.selEmp=null;try{history.replaceState(null,'','#'+v)}catch(e){}draw();window.scrollTo(0,0)}
+function homeView(tabs){tabs=tabs||visibleTabs();return tabs.includes('panel')?'panel':tabs.includes('bugun')?'bugun':tabs[0]}
+const navState=()=>({v:S.view,emp:S.selEmp||null,yt:S.ytab||null});
+let navReady=false,sonGeri=0;
+function navInit(){if(navReady)return;navReady=true;try{history.replaceState({kok:1},'',location.pathname);history.pushState(navState(),'','#'+S.view)}catch(e){}}
+function navPush(){if(!navReady)return;const c=history.state||{};const n=navState();if(c.v===n.v&&c.emp===n.emp&&c.yt===n.yt)return;try{history.pushState(n,'','#'+n.v)}catch(e){}}
+window.addEventListener('popstate',e=>{const st=e.state;
+ if(!$('#modal').classList.contains('hidden')){closeModal();try{history.pushState(navState(),'','#'+S.view)}catch(x){}return}
+ if(document.body.classList.contains('navopen')){document.body.classList.remove('navopen');try{history.pushState(navState(),'','#'+S.view)}catch(x){}return}
+ if(!S.role)return;
+ if(!st||st.kok){const home=homeView();if(S.view!==home){S.view=home;S.selEmp=null;try{history.pushState(navState(),'','#'+home)}catch(x){}draw();window.scrollTo(0,0);return}
+  if(Date.now()-sonGeri<2500){history.back();return}sonGeri=Date.now();toast('Çıkmak için tekrar geri basın');try{history.pushState(navState(),'','#'+S.view)}catch(x){}return}
+ if(!visibleTabs().includes(st.v))return;S.view=st.v;S.selEmp=st.emp||null;if(st.yt)S.ytab=st.yt;S.aDraft=S.gorDraft=S.sDraft=null;draw();window.scrollTo(0,0)});
+function setView(v){S.view=v;S.aDraft=S.gorDraft=S.sDraft=null;if(v!=='personel'&&v!=='ayrilan')S.selEmp=null;navPush();draw();window.scrollTo(0,0)}
 
 /* ================= GİRİŞ EKRANI ================= */
 function LOGIN(){
@@ -616,9 +648,11 @@ function heroHtml(){const d=new Date(),h=d.getHours();S._heroKey=today()+'-'+h;c
   '</div>'+tickerHtml()}
 function trafikItems(){const T=(S.canli||{}).trafik;if(!T)return null;return T}
 function tickerHtml(){const T=trafikItems();let body,tz='';
- if(!T){body='<span>Kartal çevresi 20 km trafik bilgisi 06:00–22:45 arası her 15 dakikada bir yenilenir — ilk bilgi bekleniyor.</span>'}
+ if(!T){body='<span>Kartal çevresi canlı trafik haritası için sağdaki <b>Yandex</b> veya <b>Google</b> düğmesine basın.</span>'}
  else{const L=(T.maddeler||[]);body=(T.ozet?'<span><b>'+esc(T.ozet)+'</b></span>':'')+L.map(m=>'<span><i class="r'+(+m.s||0)+'">●</i> '+esc(m.t)+'</span>').join('');tz='GÜNCELLEME '+esc(T.zaman||'')}
- return'<div class="tick"><div class="lb">🚦 TRAFİK · 20 KM</div><div class="vp"><div class="run" data-tk="1">'+body+body+'</div></div><div class="tz">'+tz+'</div></div>'}
+ return'<div class="tick"><div class="lb">🚦<span class="lt"> TRAFİK · 20 KM</span></div><div class="vp"><div class="run" data-tk="1">'+body+body+'</div></div><div class="tz">'+tz+'</div><div class="tkb"><a href="'+TRAFIK_YANDEX+'" target="_blank" rel="noopener" title="Yandex Haritalar — canlı trafik">🗺 Yandex</a><a href="'+TRAFIK_GOOGLE+'" target="_blank" rel="noopener" title="Google Haritalar — canlı trafik">🗺 Google</a></div></div>'}
+const TRAFIK_YANDEX='https://yandex.com.tr/harita/?ll=29.1890%2C40.8890&z=12&l=map%2Ctrf';
+const TRAFIK_GOOGLE='https://www.google.com/maps/@40.8890,29.1890,12z/data=!5m1!1e1';
 (function tkLoop(){const r=document.querySelector('.tick .run');if(r){const w=r.scrollWidth/2;if(w>0){const x=(performance.now()/1000*55)%w;r.style.transform='translateX('+(-x)+'px)'}}requestAnimationFrame(tkLoop)})();
 setInterval(()=>{const d=new Date();const c=document.getElementById('hc');if(c){c.textContent=pad(d.getHours())+':'+pad(d.getMinutes());const s2=document.getElementById('hsec');if(s2)s2.textContent=pad(d.getSeconds())}if(S._heroKey&&S._heroKey!==today()+'-'+d.getHours()&&document.getElementById('hc'))render()},1000);
 
@@ -708,13 +742,13 @@ const panelBody=()=>{
  const TL=transferList();const T=Object.entries(S.talep).filter(([i,t])=>t.durum==='bekliyor').sort((x,y)=>(y[1].acil?1:0)-(x[1].acil?1:0)||(x[1].ihtiyac||'').localeCompare(y[1].ihtiyac||''));
  const IZ=[];Object.values(S.yok).forEach(doc=>Object.entries(doc.gunler||{}).forEach(([dd,d])=>{if(d.izin&&d.izin.durum==='talep')IZ.push([doc.empId,doc.ay+'-'+dd,d.izin])}));
  const CL=pendingClaims();if(CL.length)needProfiles(CL.map(x=>x[0]));const g=S.ayar.gorunum.kart||{};
- let h='<div class="grid">'+
+ let h='<div class="grid kpis">'+
   '<div class="kpi"><div class="l">Aktif personel</div><div class="v">'+liveIds().filter(isCurrent).length+'</div></div>'+
   '<div class="kpi ok"><div class="l">'+(ds===today()?'Bugün':trDate(ds))+' gelen</div><div class="v">'+geldi+' / '+ids.length+'</div></div>'+
   '<div class="kpi '+(gelmedi?'mor':'')+'"><div class="l">Gelmeyen</div><div class="v">'+gelmedi+'</div></div>'+
-  '<div class="kpi '+(bek?'warn':'')+'"><div class="l">Onay bekleyen giriş/çıkış/mesai</div><div class="v">'+bek+'</div></div>'+
+  '<div class="kpi '+(bek?'warn':'')+'"><div class="l">Onay bekleyen</div><div class="v">'+bek+'</div></div>'+
   '<div class="kpi '+(T.length?'warn':'')+'"><div class="l">Bekleyen talep</div><div class="v">'+T.length+'</div></div>'+
-  '<div class="kpi"><div class="l">'+ymLabel(ym)+' mesai hakkı</div><div class="v">'+tl(mt)+'</div></div></div>';
+  '<div class="kpi"><div class="l">'+ymLabel(ym).split(' ')[0]+' mesai</div><div class="v">'+tl(mt)+'</div></div></div>';
  if(TL.length)h+='<div class="alert warn row between"><span>Usta başının onayladığı <b>'+TL.length+'</b> gün kaydı puantaja henüz işlenmedi.</span><button class="btn w" data-act="aktar">Puantaja aktar</button></div>';
  const groups=ustalar().map(u=>[nameOf(u)+' ekibi',[u,...ekip(u)].filter(id=>ids.includes(id))]);const inG=new Set(groups.flatMap(x=>x[1]));const rest=ids.filter(id=>!inG.has(id));if(rest.length)groups.push(['Usta başı atanmamış',rest]);
  h+='<div class="card"><div class="row between"><div class="row"><h2 style="margin:0">Günlük giriş · çıkış · mesai</h2>'+dateNav('bDate',ds)+'</div><span class="small muted">Çalışanların ve usta başının girdiği kayıtlar anında buraya düşer.</span></div><div style="height:10px"></div>'+boardTable(ids,ds,{groups})+'</div>';
@@ -788,7 +822,7 @@ V.puantaj=()=>{
  h+='<th class="tot">Gün</th><th class="tot">Cmt</th><th class="tot">Pzr</th><th class="tot">R.T.</th><th class="tot">Ek sa</th><th class="tot">Yemek</th><th class="tot">Mesai ₺</th></tr></thead><tbody>';
  const T={hi:0,cmt:0,pzr:0,rt:0,ek:0,yemek:0,tl:0};
  if(!ids.length)h+='<tr><td class="nm" colspan="'+(n+8)+'">Bu ay aktif personel yok.</td></tr>';
- ids.forEach(id=>{h+='<tr><td class="nm"><a href="#personel" data-act="emp" data-id="'+esc(id)+'">'+esc(nameOf(id))+'</a>'+(isCurrent(id)?'':' <span class="chip n">ayrıldı</span>')+'</td>';const R=rates(id);
+ ids.forEach(id=>{h+='<tr><td class="nm"><a href="#personel" data-act="emp" data-id="'+esc(id)+'">'+esc(nameOf(id))+'</a>'+(isCurrent(id)?'':' <span class="chip n">ayrıldı'+(P(id).cikis?' '+trDate(P(id).cikis).slice(0,5):'')+'</span>')+'</td>';const R=rates(id);
   for(let d=1;d<=n;d++){const ds=ym+'-'+pad(d);const k=kindOf(ds);const base=k==='rt'?'hol':k!=='hi'?'wk':'';const r=getDay(id,ds);
    if(!activeOn(id,ds)&&!r){h+='<td class="c-out" title="İşe giriş öncesi / çıkış sonrası"></td>';continue}
    const[c,cls,tt]=cellCode(id,ds,r,R);const pe=pendingParts(id,ds).length||needsTransfer(id,ds);
@@ -832,7 +866,7 @@ V.personel=()=>{
  h+='<div class="scroll sticky" style="margin-top:12px"><table class="t"><thead><tr><th>Ad soyad</th><th>Görev</th><th class="n">Cmt / gün</th><th class="n">Pazar / gün</th><th class="n">Brüt (SGK)</th><th class="n">Net (tahmini)</th><th>Maaş</th><th class="n">'+AYLAR[+ym.slice(5)-1]+' mesai</th><th class="n">Önceki aylardan</th><th class="n">Ödenecek</th><th>Mesai</th><th>Uyarı</th><th>Evrak</th></tr></thead><tbody>';
  ids.forEach(id=>{const p=P(id),u=S.ucret[id]||{},R=rates(id);const mb=missingBelge(id);const o=ayOzet(id,ym);const uy=uyarilar(id,ym);const dvn=o.dv.mes-o.dv.av;T.hak+=o.hak;T.dv+=dvn;T.od+=o.odenecek;
   const own=k=>u[k]!=null&&u[k]!=='';
-  h+='<tr class="click" data-act="emp" data-id="'+esc(id)+'"'+(uy.length?' style="background:#fffcec"':'')+'><td><b>'+esc(nameOf(id))+'</b>'+(rolOf(id)!=='calisan'?' <span class="chip b">'+ROL[rolOf(id)]+'</span>':'')+(isCurrent(id)?'':' <span class="chip n">ayrıldı</span>')+'</td><td class="small">'+esc(p.meslek||'')+'</td>'+
+  h+='<tr class="click" data-act="emp" data-id="'+esc(id)+'"'+(uy.length?' style="background:#fffcec"':'')+'><td><b>'+esc(nameOf(id))+'</b>'+(rolOf(id)!=='calisan'?' <span class="chip b">'+ROL[rolOf(id)]+'</span>':'')+(isCurrent(id)?'':' <span class="chip n">ayrıldı'+(P(id).cikis?' '+trDate(P(id).cikis).slice(0,5):'')+'</span>')+'</td><td class="small">'+esc(p.meslek||'')+'</td>'+
   '<td class="n">'+tl(R.cmt)+(own('cmt')?'':'<div class="small muted">varsayılan</div>')+'</td><td class="n">'+tl(R.pzr)+(own('pzr')?'':'<div class="small muted">varsayılan</div>')+'</td>'+
   '<td class="n">'+(u.brut?tl(u.brut):'—')+'</td><td class="n">'+(u.brut||u.netManuel?tl(netTahmin(id)):'—')+'</td><td>'+(u.brut?tickHtml(id,ym,'maas'):'')+'</td>'+
   '<td class="n">'+tl(o.hak)+'</td><td class="n" style="'+(Math.abs(dvn)>0.001?'background:var(--warnbg)':'')+'">'+(Math.abs(dvn)>0.001?'⚠ '+tl(dvn):'—')+'</td><td class="n"><b>'+tl(o.odenecek)+'</b>'+(o.tick?'<div class="small '+(Math.abs(o.kalan)>0.001?'neg':'pos')+'">kalan '+tl(o.kalan)+'</div>':'')+'</td><td>'+(Math.abs(o.odenecek)>0.001||mesaiPaid(id,ym)?tickHtml(id,ym,'mesai'):'')+'</td>'+
@@ -924,7 +958,7 @@ V.hesap=()=>{
  if(Hs.mod==='ay'){const ym=S.month;const T={};const add=(k,v)=>T[k]=(T[k]||0)+v;const ids2=ids.filter(id=>rolOf(id)!=='yonetici');
   h+='<p class="small muted" style="margin:8px 0 0">Yalnız işçi ve usta başları listelenir. Başlık satırı aşağı kaydırırken sabit kalır.</p><div class="scroll sticky" style="margin-top:8px"><table class="t"><thead><tr><th>Personel</th><th class="n">Cmt</th><th class="n">Pazar</th><th class="n">R.T.</th><th class="n">Ek sa</th><th class="n">Yemek</th><th class="n">Bu ay mesai</th><th class="n">Bu ay avans / ödeme</th><th class="n">Önceki aylardan mesai</th><th class="n">Önceki aylardan avans</th><th class="n">TOPLAM ALACAK</th><th>Mesai tiki</th><th class="n">Kalan (devreder)</th><th class="n">Maaş (net / brüt)</th><th>Maaş tiki</th><th></th></tr></thead><tbody>';
   ids2.forEach(id=>{const O=ayOzet(id,ym),c=O.c,l=O.l;const u=S.ucret[id]||{};['cmt','pzr','rt','ek','yemek'].forEach(k=>add(k,c[k]));add('m',c.mesaiTL+l.arti);add('av',l.eksi);add('dm',O.dv.mes);add('da',O.dv.av);add('top',O.odenecek);add('kal',O.kalan);add('maas',netTahmin(id));const uy=uyarilar(id,ym);const paid=mesaiPaid(id,ym);
-   h+='<tr'+(uy.length?' style="background:#fffcec"':'')+'><td><a href="#personel" data-act="emp" data-id="'+esc(id)+'"><b>'+esc(nameOf(id))+'</b></a>'+(rolOf(id)==='ustabasi'?' <span class="chip b">usta başı</span>':'')+(isCurrent(id)?'':' <span class="chip n">ayrıldı</span>')+(uy.length?' <span class="chip y" title="'+esc(uy.map(x=>x.txt).join('\n'))+'">⚠ '+uy.length+'</span>':'')+'</td><td class="n">'+nf(c.cmt)+'</td><td class="n">'+nf(c.pzr)+'</td><td class="n">'+nf(c.rt)+'</td><td class="n">'+nf(c.ek)+'</td><td class="n">'+nf(c.yemek)+'</td><td class="n">'+tl(c.mesaiTL+l.arti)+'</td><td class="n neg">'+(l.eksi?'−'+tl(l.eksi):'')+'</td>'+
+   h+='<tr'+(uy.length?' style="background:#fffcec"':'')+'><td><a href="#personel" data-act="emp" data-id="'+esc(id)+'"><b>'+esc(nameOf(id))+'</b></a>'+(rolOf(id)==='ustabasi'?' <span class="chip b">usta başı</span>':'')+(isCurrent(id)?'':' <span class="chip n">ayrıldı'+(P(id).cikis?' '+trDate(P(id).cikis).slice(0,5):'')+'</span>')+(uy.length?' <span class="chip y" title="'+esc(uy.map(x=>x.txt).join('\n'))+'">⚠ '+uy.length+'</span>':'')+'</td><td class="n">'+nf(c.cmt)+'</td><td class="n">'+nf(c.pzr)+'</td><td class="n">'+nf(c.rt)+'</td><td class="n">'+nf(c.ek)+'</td><td class="n">'+nf(c.yemek)+'</td><td class="n">'+tl(c.mesaiTL+l.arti)+'</td><td class="n neg">'+(l.eksi?'−'+tl(l.eksi):'')+'</td>'+
    '<td class="n" style="'+(O.dv.mes>0.001&&!O.tick?'background:var(--warnbg)':'')+'">'+(O.dv.mes?(O.dv.mes>0&&!O.tick?'⚠ ':'')+tl(O.dv.mes):'')+'</td><td class="n neg" style="'+(O.dv.av>0.001&&!O.tick?'background:var(--warnbg)':'')+'">'+(O.dv.av?(O.tick?'':'⚠ ')+'−'+tl(O.dv.av):'')+'</td><td class="n" style="background:var(--warnbg)"><b>'+tl(O.odenecek)+'</b></td><td>'+(Math.abs(O.odenecek)>0.001||paid?tickHtml(id,ym,'mesai'):'')+'</td>'+
    '<td class="n">'+(O.tick?'<b class="'+(Math.abs(O.kalan)>0.001?'neg':'pos')+'">'+tl(O.kalan)+'</b>':paid?'<span class="muted small">sonraki ödemede</span>':'<span class="muted">'+tl(O.kalan)+'</span>')+'</td>'+
    '<td class="n small">'+(u.brut||u.netManuel?tl(netTahmin(id))+'<div class="muted">'+(u.brut?tl(u.brut)+' brüt':'')+'</div>':'—')+'</td><td>'+(u.brut?tickHtml(id,ym,'maas'):'')+'</td><td><button class="btn s" data-act="xlsKisi" data-id="'+esc(id)+'">Excel</button></td></tr>'});
@@ -943,7 +977,7 @@ V.maas=()=>{if(!yetki('maasOde'))return yetkiYok;const ym=S.month,[a,b]=monthRan
  const T={net:0,mes:0,top:0,yat:0,on:0,n:0};
  let rows='';ids.forEach(id=>{const M=maasHesap(id,ym),O=ayOzet(id,ym),u=S.ucret[id]||{};const mesK=mesaiTick(id,ym)?0:Math.max(0,O.odenecek);const top=(u.brut||u.netManuel?M.hakNet:0)+mesK;const kd=konDurum(id,ym);
   T.net+=u.brut||u.netManuel?M.hakNet:0;T.mes+=mesK;T.top+=top;if(u.brut){T.n++;if(maasPaid(id,ym))T.yat++}if(kd[0]==='g')T.on++;
-  rows+='<tr'+(u.brut&&!maasPaid(id,ym)?' style="background:#fffcec"':'')+'><td><a href="#personel" data-act="emp" data-id="'+esc(id)+'"><b>'+esc(nameOf(id))+'</b></a>'+(rolOf(id)!=='calisan'?' <span class="chip b">'+esc(unvanOf(id)||ROL[rolOf(id)])+'</span>':'')+(isCurrent(id)?'':' <span class="chip n">ayrıldı</span>')+'</td>'+
+  rows+='<tr'+(u.brut&&!maasPaid(id,ym)?' style="background:#fffcec"':'')+'><td><a href="#personel" data-act="emp" data-id="'+esc(id)+'"><b>'+esc(nameOf(id))+'</b></a>'+(rolOf(id)!=='calisan'?' <span class="chip b">'+esc(unvanOf(id)||ROL[rolOf(id)])+'</span>':'')+(isCurrent(id)?'':' <span class="chip n">ayrıldı'+(P(id).cikis?' '+trDate(P(id).cikis).slice(0,5):'')+'</span>')+'</td>'+
   '<td class="n">'+M.gun+(M.tam?'':' <span class="small muted">/ '+M.takvim+'</span>')+'</td><td class="n" title="Ücretsiz izin '+M.det.UI+' · Devamsız '+M.det.DV+' · Rapor '+M.det.RP+'">'+(M.eksik?'<b class="neg">'+M.eksik+'</b> <span class="small muted">'+[M.det.UI?'Üİ '+M.det.UI:'',M.det.DV?'D '+M.det.DV:'',M.det.RP?'R '+M.det.RP:''].filter(Boolean).join(' · ')+'</span>':'0')+'</td>'+
   '<td class="n">'+(u.brut?tl(u.brut):'—')+'</td><td class="n">'+(u.brut?tl(M.hakBrut):'—')+'</td><td class="n">'+(u.brut||u.netManuel?tl(M.net):'—')+'</td><td class="n"><b>'+(u.brut||u.netManuel?tl(M.hakNet):'—')+'</b></td>'+
   '<td class="n">'+(mesaiTick(id,ym)?'<span class="pos small">ödendi '+tl(mesaiTick(id,ym).tutar)+'</span>':tl(mesK))+'</td><td class="n" style="background:var(--warnbg)"><b>'+tl(top)+'</b></td>'+
@@ -1074,7 +1108,8 @@ V.sirket=()=>{if(!isY())return'<div class="card">Bu bölüm yalnızca yöneticil
 
 /* ================= YÖNETİM ================= */
 V.yonetim=()=>{const t=S.ytab;
- let h='<div class="card"><div class="row between"><h2 style="margin:0">Yönetim</h2><div class="tabs">'+[['hesaplar','Kullanıcı hesapları'],['roller','Roller ve ekipler'],['duzen','Sayfa düzeni'],['ayarlar','Ayarlar'],['yedek','Yedek']].map(([k,l])=>'<button class="'+(t===k?'on':'')+'" data-act="ytab" data-k="'+k+'">'+l+'</button>').join('')+'</div></div></div>';
+ let h='<div class="card"><div class="row between"><h2 style="margin:0">Yönetim</h2><div class="tabs">'+[['hesaplar','Kullanıcı hesapları'],['roller','Roller ve ekipler'],['islemler','Yapılan işlemler'],['duzen','Sayfa düzeni'],['ayarlar','Ayarlar'],['yedek','Yedek']].map(([k,l])=>'<button class="'+(t===k?'on':'')+'" data-act="ytab" data-k="'+k+'">'+l+'</button>').join('')+'</div></div></div>';
+ if(t==='islemler')return h+V.islemler();
  if(t==='hesaplar'){const ids=liveIds().filter(isCurrent);const canH=yetki('hesap');
   h+='<div class="card"><h3>Kullanıcı adı ve şifre</h3><p class="small muted">Personele kullanıcı adı ve şifre verin; telefonundan veya ortak bir cihazdan bu bilgilerle girer. Rolü (İşçi / Usta başı / Yönetici) “Roller ve ekipler”den belirlenir. Kullanıcı adı: adın baş harfi.soyadı (ör. k.gültekin). Şifreyi unutan için “Yeni şifre” ile yenisi oluşturulur; çalışan şifresini 🔑 düğmesinden kendisi değiştirebilir.</p>'+(canH?'':'<div class="alert warn small">Kullanıcı adı açma ve şifre oluşturma yetkisi <b>Genel Müdür</b> ve <b>Satış ve Planlama Yöneticisi</b>ndedir (Roller ve ekipler → yetkiler).</div>')+'<div class="scroll"><table class="t"><thead><tr><th>Personel</th><th>Rol</th><th>Kullanıcı adı</th><th>Durum</th><th>Oluşturan</th>'+(window.__CF?'':'<th>Claude hesabı</th>')+'<th></th></tr></thead><tbody>';
   ids.forEach(id=>{const acc=Object.entries(S.hesaplar).find(x=>x[1].empId===id);const a=acc&&acc[1];
@@ -1119,7 +1154,7 @@ function kimNeGorur(){if(!(isY()||S.role==='gozlem'))return'';const ids=liveIds(
 function kisiTabsRol(r){const cfg=(S.ayar.gorunum.tabs||{})[r];return(ROLE_TABS[r]||[]).filter(t=>(FORCED[r]||[]).includes(t)||t==='kilavuz'||!cfg||cfg.includes(t))}
 V.kilavuz=()=>{const r=S.role;const sec=(roles,html)=>roles.includes(r)?html:'';
  return'<div class="card guide"><h2>Kullanım kılavuzu</h2><p>'+esc(S.ayar.gorunum.ad||PROG)+' — personelin giriş-çıkış, mesai, izin ve haftalık iş planlamasını tek yerden takip eder. Aşağıda rolünüze göre yapmanız gerekenler var.</p>'+kimNeGorur()+
- '<h3>Giriş, şifre ve menü</h3><ul><li><b>Kullanıcı adı:</b> adınızın baş harfi, nokta, soyadınız — ör. <b>k.gültekin</b>. Türkçe harf yerine düz harf de yazabilirsiniz (k.gultekin).</li><li><b>Şifre:</b> ilk şifreyi yöneticiniz verir. Girişten sonra sağ üstteki 🔑 düğmesiyle kendi şifrenizi belirleyin (en az 6 karakter). Unutursanız yöneticiniz size yeni şifre oluşturur.</li><li>Kullanıcı adı açma ve şifre oluşturma yetkisi <b>Genel Müdür</b> ve <b>Satış ve Planlama Yöneticisi</b>ndedir.</li><li><b>Menü</b> sol taraftadır; telefonda sol üstteki <b>☰</b> ile açılır. Sol üstteki <b>logoya</b> basınca ana sayfaya (Panel / Bugün) dönersiniz.</li><li>Ana sayfadaki bilgi kutusunun altındaki <b>trafik şeridi</b> Kartal çevresi 20 km için yoğunluk, kaza ve kapalı yol bilgisini gösterir; 15 dakikada bir yenilenir. Hava ve kur saat başı yenilenir.</li><li>Ortak cihazda iş bitince <b>Çıkış yap</b>’a basın.</li></ul>'+
+ '<h3>Giriş, şifre ve menü</h3><ul><li><b>Kullanıcı adı:</b> adınızın baş harfi, nokta, soyadınız — ör. <b>k.gültekin</b>. Türkçe harf yerine düz harf de yazabilirsiniz (k.gultekin).</li><li><b>Şifre:</b> ilk şifreyi yöneticiniz verir. Girişten sonra sağ üstteki 🔑 düğmesiyle kendi şifrenizi belirleyin (en az 6 karakter). Unutursanız yöneticiniz size yeni şifre oluşturur.</li><li>Kullanıcı adı açma ve şifre oluşturma yetkisi <b>Genel Müdür</b> ve <b>Satış ve Planlama Yöneticisi</b>ndedir.</li><li><b>Menü</b> sol taraftadır; telefonda sol üstteki <b>☰</b> ile açılır. Sol üstteki <b>logoya</b> basınca ana sayfaya (Panel / Bugün) dönersiniz.</li><li>Ana sayfadaki bilgi kutusunun altındaki <b>trafik şeridi</b>ndeki <b>🗺 Yandex</b> ve <b>🗺 Google</b> düğmeleri Kartal merkezli canlı trafik haritasını açar (telefonda yüklüyse harita uygulamasında). Hava ve kur saat başı yenilenir.</li><li>Ortak cihazda iş bitince <b>Çıkış yap</b>’a basın.</li></ul>'+
  '<h3>Kişisel bilgiler ve doğum günleri</h3><ul><li>Kimlik no, uyruk, doğum tarihi ve ev adresini yalnız <b>Genel Müdür</b> ve <b>Satış ve Planlama Yöneticisi</b> girer ve görür (Personel → kişi → Kişisel bilgiler). TC numarası kontrol hanesiyle doğrulanır.</li><li>Bir çalışanın doğum günü geldiğinde yöneticilerin ana sayfasında <b>sarı</b> uyarı çıkar; duyurularda herkese otomatik olarak “Kıymetli çalışanımız … doğum gününü kutlar, sağlıklı ve başarılı nice mutlu yaşlar dileriz.” mesajı yayınlanır.</li></ul>'+
  '<h3>Planlama ve yönetici notları</h3><ul><li>Planlama sayfası ayrı bölümlerden oluşur: <b>Hafta başı planı</b>, <b>Hafta sonu planı</b>, <b>Yönetici notları</b>, <b>Talepler</b>, <b>Günlük notlar</b>.</li><li>Yönetici, usta başının planından önce ya da sonra <b>Yönetici notları</b>na not yazabilir. Notu yalnız usta başı ve yöneticiler görür.</li><li>Not yazılınca usta başının ekranına anında <b>sarı</b> uyarı düşer. Usta başı <b>Okudum</b>’a basınca sarı kalkar; yöneticinin duyurular bölümünde “notu okudu” bilgisi görünür.</li><li>Notun yazılması ve okunması tarih ve saatiyle <b>Yapılan işlemler</b>e kaydedilir.</li></ul>'+
  '<h3>Renkler ne anlatır?</h3><ul><li><span class="st st-y">Sarı</span> — kayıt girildi, usta başı veya yönetici onayı bekliyor.</li><li><span class="st st-g">Yeşil</span> — usta başı / yönetici onayladı; saatler kesinleşti.</li><li><span class="st st-m">Mor</span> — kişi o gün gelmedi (işaretlendi ya da mesai başlangıcından '+num(S.ayar.gelmediDk,60)+' dk sonra hâlâ giriş yok).</li><li><span class="st st-b">Mavi</span> — onaylı izinli.</li><li><span class="st st-n">Gri</span> — henüz kayıt yok.</li></ul><p>Renkler <b>her gün sıfırlanır</b>: dün gelmeyen veya geç gelen kişi bugün normal (gri) başlar. '+esc(S.ayar.baslangic)+' + '+num(S.ayar.gecDk,15)+' dk sonrası girişler “geç” etiketi alır.</p>'+
@@ -1156,7 +1191,7 @@ ACT.mon=d=>{S.month=addMonth(S.month,+d.k);draw()};
 ACT.bDate=d=>{S.bDate=+d.k===0?today():addDay(S.bDate,+d.k);S.nDirty=false;draw()};CHG.bDate=(d,el)=>{if(el.value){S.bDate=el.value;S.nDirty=false;draw()}};
 CHG.showOld=(d,el)=>{S.showOld=el.checked;draw()};
 CHG.preview=(d,el)=>{S.preview=el.value||null;S.view=null;decideRole();draw()};ACT.pvOff=()=>{S.preview=null;S.view=null;decideRole();draw()};
-ACT.emp=d=>{S.selEmp=d.id;const v=isCurrent(d.id)?'personel':'ayrilan';if(S.view!==v){S.view=v;try{history.replaceState(null,'','#'+v)}catch(e){}}draw();window.scrollTo(0,0)};
+ACT.emp=d=>{S.selEmp=d.id;const v=isCurrent(d.id)?'personel':'ayrilan';S.view=v;navPush();draw();window.scrollTo(0,0)};
 ACT.empBack=()=>{S.selEmp=null;draw()};
 ACT.gDate=d=>{if(S.gDirty&&!S._gConfirm){S._gConfirm=1;toast('Kaydedilmemiş değişiklikler var. Kaydedin veya tekrar basın.','y');return}S._gConfirm=0;S.gDirty=false;S.gDate=+d.k===0?today():addDay(S.gDate,+d.k);draw()};
 CHG.gDate=(d,el)=>{if(!el.value)return;S.gDirty=false;S.gDate=el.value;draw()};
@@ -1282,7 +1317,7 @@ ACT.pwSelfGo=async()=>{if(S.gz)return;const o=val('ps-o'),n=val('ps-n'),r=val('p
  if(window.__CF){try{const r=await window.__cf.pw(o,n);closeModal();storeSession({...S.session,t:r.t});toast('Şifreniz değiştirildi ✓');logEvt('Kullanıcı hesabı',S.session.empId,'Kullanıcı kendi şifresini değiştirdi')}catch(e){toast(e&&e.code==='eski_sifre'?'Mevcut şifre hatalı':'Şifre değiştirilemedi','e')}return}
  const u=S.session&&S.session.u;if(!u)return;let a=null;try{const d=await S.db.doc('hesaplar/'+u).get();a=d.exists?d.data():null}catch(e){}if(!a||SHA.pw(o,a.salt)!==a.hash){toast('Mevcut şifre hatalı','e');return}
  const b=clone(a);b.salt=rid()+rid();b.hash=SHA.pw(n,b.salt);b.ts=Date.now();closeModal();try{await S.db.doc('hesaplar/'+u).set(b);storeSession({...S.session,t:b.hash.slice(0,16)});toast('Şifreniz değiştirildi ✓');logEvt('Kullanıcı hesabı',S.session.empId,'Kullanıcı kendi şifresini değiştirdi')}catch(e){toast('Şifre değiştirilemedi — yöneticinizden sıfırlama isteyin','e')}};
-ACT.ytab=d=>{S.ytab=d.k;S.aDraft=S.gorDraft=null;draw()};
+ACT.ytab=d=>{S.ytab=d.k;S.aDraft=S.gorDraft=null;navPush();draw()};
 CHG.rol=async(d,el)=>{if(!yetki('unvan')){toast('Genel Müdür yetkisi gerekir','e');draw();return}const p=clone(P(d.id));const o=rolOf(d.id);p.rol=el.value;if(el.value!=='calisan')delete p.ustabasi;await savePersonel(d.id,p).catch(()=>{});logEvt('Rol',d.id,ROL[o]+' → '+ROL[el.value]);toast(nameOf(d.id)+': '+ROL[el.value]);draw()};
 CHG.usta=async(d,el)=>{const p=clone(P(d.id));if(el.value)p.ustabasi=el.value;else delete p.ustabasi;await savePersonel(d.id,p).catch(()=>{});logEvt('Ekip',d.id,'Usta başı: '+(el.value?nameOf(el.value):'yok'));draw()};
 CHG.gorTab=(d,el)=>{const G=S.gorDraft;G.tabs=G.tabs||{};let cur=G.tabs[d.r]||ROLE_TABS[d.r].slice();cur=cur.filter(x=>x!==d.t);if(el.checked)cur.push(d.t);G.tabs[d.r]=ROLE_TABS[d.r].filter(x=>cur.includes(x))};
@@ -1504,7 +1539,7 @@ document.addEventListener('change',e=>{const b=e.target.closest('[data-chg]');if
 document.addEventListener('input',e=>{const b=e.target.closest('[data-inp]');if(!b)return;const f=INP[b.dataset.inp];if(f)f(b.dataset,b,e)});
 document.addEventListener('focusout',()=>setTimeout(()=>{if(S.deferred&&!isEditing()&&$('#modal').classList.contains('hidden'))draw()},60));
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#modal').classList.contains('hidden'))closeModal();if(e.key==='Enter'&&e.target.id==='l-p')ACT.login()});
-window.addEventListener('hashchange',()=>{const v=location.hash.slice(1);if(visibleTabs().includes(v)&&v!==S.view){S.view=v;draw()}});
+
 setInterval(()=>{if(S.role&&(S.view==='panel'||S.view==='bugun'))render()},60000);
 {const _p=V.puantaj,_g=V.gunluk,_s=V.sirket;V.puantaj=()=>roNote('kayit')+_p();V.gunluk=()=>roNote('kayit')+_g();V.sirket=()=>roNote('sirket')+_s()}
 boot().catch(e=>{console.error(e);fatal('Başlatılamadı: '+(e&&e.message||e))});
